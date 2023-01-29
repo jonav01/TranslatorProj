@@ -23,28 +23,23 @@ def get_translator_models(source_lang, target_lang):
     """Function to get all the models"""
     return language_translator.list_models(source=source_lang, target=target_lang).get_result()
 
+def english_to_french(english_text):
+     """ French <- English """
 
-class Translation:
+     model = get_translator_models("en", "fr")
+     french_text = language_translator.translate(
+     text=english_text,
+     model_id=model["models"][0]["model_id"]).get_result()
+     return french_text["translations"][0]["translation"]
 
-    """This is a Class !"""
+def french_to_english(french_text):
+    """ French -> English """
 
-    def english_to_french(english_text):
-        """ French <- English """
+    model = get_translator_models("fr", "en")
+    english_text = language_translator.translate(
+    text=french_text,
+    model_id=model["models"][0]["model_id"]).get_result()
+    return english_text["translations"][0]["translation"]
 
-        model = get_translator_models("en", "fr")
-        french_text = language_translator.translate(
-            text=english_text,
-            model_id=model["models"][0]["model_id"]).get_result()
-        return french_text["translations"][0]["translation"]
-
-    def french_to_english(french_text):
-        """ French -> English """
-
-        model = get_translator_models("fr", "en")
-        english_text = language_translator.translate(
-            text=french_text,
-            model_id=model["models"][0]["model_id"]).get_result()
-        return english_text["translations"][0]["translation"]
-
-    frenchText = english_to_french("Hello")
-    print(frenchText)
+frenchText = english_to_french("Hello")
+print(frenchText)
